@@ -9,7 +9,7 @@
 ![Redis](https://img.shields.io/badge/-Redis-DC382D?logo=redis&logoColor=white)
 ![Docker](https://img.shields.io/badge/-Docker-2496ED?logo=docker&logoColor=white)
 ![Zeabur](https://img.shields.io/badge/-Zeabur-6C5CE7)
-![License](https://img.shields.io/badge/license-MIT-00D4C8.svg)
+![License](https://img.shields.io/badge/license-AGPLv3%20%2B%20Commercial-00D4C8.svg)
 
 </div>
 
@@ -17,7 +17,7 @@
 
 ## What it does
 
-Scrapes a busker's profile page (JavaScript-rendered) daily at 11 PM Singapore time (GMT+8) using Playwright, then creates the upcoming performance events in a configured Google Calendar. Redis is used for hash-based deduplication, so events are never double-created even after container restarts or redeployments. A lightweight Flask API and HTML status dashboard let you monitor state and trigger manual runs without touching the server.
+Scrapes a busker's profile page (JavaScript-rendered) daily at 11 PM Singapore time (GMT+8) using Playwright, then creates the upcoming performance events in a configured Google Calendar. Redis is used for hash-based deduplication, so events are never double-created even after container restarts or redeployments. A lightweight Flask API and HTML status dashboard let you monitor state and trigger manual runs without touching the server. This is the second iteration of the tool — it moves scraping to Playwright and syncing state to Redis, replacing [mikew-gcal-v1](../mikew-gcal-v1)'s file-based approach; [mikew-gcal-v3](../mikew-gcal-v3) later replaces this again with a Telegram-first bot.
 
 ## Features
 
@@ -42,10 +42,14 @@ Scrapes a busker's profile page (JavaScript-rendered) daily at 11 PM Singapore t
 | Frontend | Single-file HTML (`status.html`) |
 | Hosting | Zeabur (Docker, GitHub CI/CD) |
 
+## Screenshots
+
+_Screenshots coming soon (the `status.html` dashboard is the main visual surface)._
+
 ## Quick Start
 
 ```bash
-git clone <repo>
+git clone https://github.com/TheBooleanJulian/mikew-gcal-v2
 cd mikew-gcal-v2
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
@@ -121,14 +125,17 @@ Deployed on Zeabur via Docker. Push to `main` triggers a build and deploy. Set a
 
 ## Changelog
 
-- **Jan 2026** — Fixed Google Calendar auth on deployed container; stabilised Playwright browser detection across system and Playwright-managed installs; added symlinks in Dockerfile for reliable Chromium resolution
-- **Jan 2026 (early)** — Added `requests`/BeautifulSoup fallback scraping path when Playwright fails; multiple Playwright launch fallback strategies; disk usage optimisation in Docker image
-- **Jan 2 2026** — Added `status.html` dashboard with formatted scrape data display and copy functionality; added health check and manual trigger API endpoints; added `GOOGLE_CREDENTIALS_JSON` env var support for credential-free deployment
-- **Jan 1 2026** — Improved event extraction and schedule parsing with better selector matching and fallback logic; added `pytz` dependency; hid sensitive env vars (`BUSKER_URL`, `CALENDAR_ID`); added manual testing scripts
+- **2026-07-18** — Rewrote README with clearer structure and current feature set; switched project to dual AGPLv3 + commercial licensing
+- **2026-01-05** — Fixed Google Calendar auth on deployed container; stabilised Playwright browser detection across system and Playwright-managed installs; added Dockerfile symlinks for reliable Chromium resolution
+- **2026-01-03/04** — Added `requests`/BeautifulSoup fallback path when Playwright fails; multiple Playwright launch fallback strategies; Docker disk usage optimisation; `status.html` dashboard with manual trigger API endpoints; `GOOGLE_CREDENTIALS_JSON` support for credential-free deployment
+- **2026-01-01/02** — Improved event extraction and schedule parsing; added `pytz` dependency; hid sensitive env vars (`BUSKER_URL`, `CALENDAR_ID`); added manual testing scripts; added MIT license (superseded by the dual AGPLv3/commercial license above)
 
 ## License
 
-MIT
+This project is dual licensed.
+
+- Community Edition — [GNU Affero General Public License v3 (AGPLv3)](LICENSE). Free to use, modify, and self-host. If you distribute a modified version or run it as a network service, you must make the corresponding source available.
+- Commercial License — for organisations that want to embed, modify, or distribute this software without AGPLv3's obligations. See [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md).
 
 ---
 
